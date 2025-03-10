@@ -1,5 +1,5 @@
 FROM golang:1.18 as builder
-WORKDIR /go/src/github.com/HanseMerkur/vault-logrotate
+WORKDIR /go/src/vault-logrotate
 COPY * ./
 RUN go get -d -v \
     && go build .
@@ -22,8 +22,8 @@ RUN apk add --no-cache logrotate \
         -h "/tmp" \
         crond
 
-COPY --from=builder /go/src/github.com/HanseMerkur/vault-logrotate/vault-logrotate /usr/local/bin/vault-logrotate
+COPY --from=builder /go/src/vault-logrotate/vault-logrotate /usr/local/bin/logrotate-cron
 
 USER crond
 
-ENTRYPOINT ["/usr/local/bin/vault-logrotate"]
+ENTRYPOINT ["/usr/local/bin/logrotate-cron"]
